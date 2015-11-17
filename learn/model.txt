@@ -1,0 +1,15 @@
+v1 = True
+v2 = False
+v3 = True
+v4 = False
+v5 = False
+v6 = True
+v7 = True
+Rules:
+v1 = v2+v3;
+v2 = (!v6)*v7;
+v3 = v1*v2*v4;
+v4 = !v3;
+v5 = !(v4*v1)+v2;
+v6 = v3*v5;
+v7 = v1*v6;

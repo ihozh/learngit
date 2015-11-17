@@ -8,14 +8,14 @@ public class gpuExecRules {
         gpuRuleLst = new ArrayList<ExecRules>();
     }
     public void addExecRule(ExecRules rule,int run) {
-        for (int i = 0;i<run;i++) {
+        for (int i=0;i<run;i++) {
             Collections.shuffle(rule.getExecRules());
-            
+
             ExecRules tmpR = new ExecRules(rule.getExecRules());
 
             gpuRuleLst.add(tmpR);
         }
-        
+
     }
     public List<ExecRules> getgpuExecRules() {
         return gpuRuleLst;
