@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -43,11 +42,26 @@ public class testList{
         System.out.println(line2);*/
 
         //List<gpuExecRules> gpurl = new ArrayList<gpuExecRules>();
-        gpuExecRules gpurl = new gpuExecRules();
-        gpurl.addExecRule(3,5);
-        List<Integer> gpurlst = gpurl.getgpuExecRules();
-        for (int er:gpurlst) {
+        ExecRules rl = new ExecRules();
+        rl.addRule(3);
+        rl.addRule(15);
+        rl.addRule(17);
+        rl.addRule(6);
+        rl.addRule(10);
+        rl.addRule(16);
+        rl.addRule(39);
+        rl.addRule(1);
+        List<Integer> rlst = rl.getExecRules();
+        /*for (int er:rlst) {
             System.out.println(er);
+        }*/
+        System.out.println(rlst);
+        gpuExecRules gpurl = new gpuExecRules();
+        gpurl.addExecRule(rl,5);
+        //System.out.println(gpurl.getgpuExecRules().get(1).getExecRules());
+        List<ExecRules> gpurlst = gpurl.getgpuExecRules();
+        for (ExecRules er:gpurlst) {
+                System.out.println(er.getExecRules());
         }
 
         //正则表达式测试

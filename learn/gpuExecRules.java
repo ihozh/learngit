@@ -1,22 +1,23 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class gpuExecRules {
-    //private boolean async;
-    private List<Integer> gpuRuleLst;
+    private List<ExecRules> gpuRuleLst;
     public gpuExecRules() {
-        gpuRuleLst = new ArrayList<Integer>();
+        gpuRuleLst = new ArrayList<ExecRules>();
     }
-    public void addExecRule(int a, int run) {
+    public void addExecRule(ExecRules rule,int run) {
         for (int i = 0;i<run;i++) {
-            gpuRuleLst.add(a);
-        }
-    }
-    public List<Integer> getgpuExecRules() {
-        return gpuRuleLst;
+            Collections.shuffle(rule.getExecRules());
+            
+            ExecRules tmpR = new ExecRules(rule.getExecRules());
 
+            gpuRuleLst.add(tmpR);
+        }
+        
     }
-    public void sayHello(){
-        System.out.println("Hello");
+    public List<ExecRules> getgpuExecRules() {
+        return gpuRuleLst;
     }
 }
