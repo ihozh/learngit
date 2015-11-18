@@ -51,7 +51,7 @@ public class gpuSimulator {
 			for (ExecRules execrules:tmpexecrule) {
 				List<Rule> tmprule = execrules.getExecRules();
 				for (Rule rule:tmprule) {
-					System.out.print(rule.getLval()+" ");
+					System.out.print(rule.getLval()+" "+rule.getRval()+" |");
 				}
 				System.out.print(" ");
 			}
