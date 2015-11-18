@@ -1,4 +1,4 @@
 all:
-	javac testList.java
-	java testList
+	javac gpuSimulator.java
+	java gpuSimulator model.txt
 	rm *.class

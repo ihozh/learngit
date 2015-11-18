@@ -1,18 +1,19 @@
 import java.util.List;
 import java.util.ArrayList;
 public class ExecRules {
-        private List<Integer> ruleLst;
-        public ExecRules(List<Integer> T) {
-                ruleLst = new ArrayList<Integer>(T);
-        }
-        public ExecRules() {
-                ruleLst = new ArrayList<Integer>();
-        }
-        public List<Integer> getExecRules() {
-                return ruleLst;
-        }
-        public void addRule(int a) {
-                ruleLst.add(a);
-        }
+	private List<Rule> ruleLst;
+	
+	public ExecRules(List<Rule> T) {
+		ruleLst = new ArrayList<Rule>(T);
+	}
+	public ExecRules() {
+		ruleLst = new ArrayList<Rule>();
+	}
+	public List<Rule> getExecRules() {
+		return ruleLst;
+	}
+	public void addRule(Rule a) {
+		ruleLst.add(a);
+	}
 }
 
