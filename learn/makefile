@@ -1,4 +1,4 @@
 all:
-	javac gpuSimulator.java
-	java gpuSimulator model.txt
+	javac -d . src/*.java
+	java gpuSimulator model/model.txt
 	rm *.class
