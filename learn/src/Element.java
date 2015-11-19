@@ -4,10 +4,12 @@ import java.util.List;
 public class Element {
     private String name;
     private int value;
+	private int curVal;
     public Element(String line) {
         String[] tmpArr = line.split("=");
         name = tmpArr[0].trim();
         value = eval(tmpArr[1].trim());
+		curVal = value;
     }
     public int eval(String in) {
         if (in.toLowerCase().equals("true"))
@@ -22,7 +24,10 @@ public class Element {
 	public String getName() {
 		return name;
 	}
-	public int getValue() {
-		return value;
+	public int getCurVal() {
+		return curVal;
+	}
+	public void setCurVal(int v) {
+		curVal = v;
 	}
 }

@@ -2,17 +2,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class gpuElement {
-	private String name;
-	private List<Integer> value;
-	public gpuElement(String n, List<Integer> v) {
-		name = n;
-		value = new ArrayList<Integer> (v);
-		
+	private List<Element> value;
+	public gpuElement() {
+		value = new ArrayList<Element>();
 	}
-	public String getName() {
-		return name;
+	public gpuElement(List<Element> e) {
+		value = new ArrayList<Element> (e);
 	}
-	public List<Integer> getValue() {
+
+	public List<Element> getValue() {
 		return value;
 	}
 }

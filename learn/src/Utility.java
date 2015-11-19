@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Utility {
-	public static void parseElements(List<Element> eleList, BufferedReader br) {
+	public static void parseElements(List<Element> eleList, BufferedReader br,
+			Map<String, Element> eleMap, Map<String,Integer> eleMapM) {
 		String line = "";
 		try {
+			int i = 0;
 			while ((line = br.readLine()) != null) {
 				if (line.contains("Rules:"))
 					return;
@@ -18,21 +21,33 @@ public class Utility {
 					continue;
 				Element tmpEle = new Element(line);
 				eleList.add(tmpEle);
+				if (eleMap.containsKey(tmpEle.getName())) {
+					System.err
+						.println("Repeating element: "+ tmpEle.getName());
+					System.exit(-1);
+				}
+				eleMap.put(tmpEle.getName(), tmpEle);
+				eleMapM.put(tmpEle.getName(), i);
+				i++;
 			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	public static void parseRules(List<ExecRules> erList, BufferedReader br) {
+	public static void parseRules(List<ExecRules> erList,
+			BufferedReader br,Map<String,Integer> eleMapM) {
 		String line = "";
 		try {
 			while ((line = br.readLine()) != null) {
 				if (line.length() == 0)
 					continue;
 				line = line.trim();
+				String lineIndex = mapIndex(line,eleMapM);
 				ExecRules er = new ExecRules();
-				er.addRule(new Rule(line));
+				er.addRule(new Rule(lineIndex));
+
+
 				erList.add(er);
 			}
 		}
@@ -40,6 +55,31 @@ public class Utility {
 			e.printStackTrace();
 		}
 	}
+	public static String mapIndex(String line, Map<String,Integer> eleMapM) {
+		StringTokenizer parser = new StringTokenizer(line, "+*!(); ", true);
+		StringBuffer newLine = new StringBuffer(line.length());
+		while (parser.hasMoreTokens()){
+			String token = parser.nextToken();
+			if (eleMapM.get(token)!=null) {
+				int index = eleMapM.get(token);
+				newLine.append(String.valueOf(index));
+			} else {
+				newLine.append(token);
+			}
+		}
+		return newLine.toString();
+
+	}
+	/*public static void parseToMatrix(int[][] eleMatrix, List<Element> eleList, int run){
+		int maxele = eleList.size();
+		for (int i = 0;i < run; i++) {
+			int j = 0;
+			for (Element e:eleList) {
+				eleMatrix[i][j] = e.getCurVal();
+				j++;
+			}
+		}
+	}*/
 	private static boolean isOperator (char c) {
 		return c =='+' || c == '*' || c == '!' || c == '(' || c == ')';
 	}
@@ -119,5 +159,119 @@ public class Utility {
 			postfix.append(" ").append(op);
 		}
 		return postfix.toString();
+	}
+	public static void caSimulation (int run, int cycles,List<Element> eleList, 
+			List<ExecRules> ruleList,
+			Map<String, Element> eleMap) {
+		int[][] eleM;
+		String[][] ruleLM;
+		String[][] ruleRM;
+		int elesize = eleList.size();
+		eleM = new int[run][elesize];
+		for (int i = 0; i<run; i++) {
+			List<Element> tmpE = new ArrayList<Element>(eleList);
+			for(int j = 0;j<elesize;j++) {
+				eleM[i][j] = tmpE.get(j).getCurVal();
+			}
+		}
+		int rulesize = 0;
+		for (ExecRules er : ruleList) {
+			List<Rule> tmp = er.getExecRules();
+			for(Rule r : tmp) {
+				rulesize++;
+			}
+		}
+		for (int c = 0; c < cycles; c++) {
+			ruleLM = new String[run][rulesize];
+			ruleRM = new String[run][rulesize];
+
+			for (int i = 0;i<run;i++) {
+				List<ExecRules> tmpER = new ArrayList<ExecRules>(ruleList);
+				Collections.shuffle(tmpER);
+				int j = 0;
+				for (ExecRules er : tmpER) {
+					List<Rule> tmpR = er.getExecRules();
+					for(Rule r:tmpR) {
+						ruleLM[i][j] = r.getLval();
+						ruleRM[i][j] = r.getRval();
+						j++;
+					}
+				}
+			}
+			for (int i = 0;i<run;i++) {
+				for(int j=0;j<ruleLM[0].length;j++) {
+					System.out.print(ruleRM[i][j]+" ");
+				}
+				System.out.println();
+			}
+		}
+			//List<ExecRules> tmpER = new ArrayList<ExecRules>(rule);
+			//Collections.shuffle(tmpER);
+			//for (gpuExecRules gpuer : tmpR) {
+				//for (ExecRules er : tmpER)
+					//evalRule(er,eleMap);
+			//}
+	}
+
+
+	public static void evalRule (ExecRules er, Map<String, Element> eleMap) {
+		for (Rule rule : er.getExecRules()) {
+			Element ele = eleMap.get(rule.getLval());
+			if (ele == null) {
+				System.err.println("Element does not exist: "+ rule.getLval());
+				System.exit(-1);
+			}
+			int val = evalExpr(rule.getRval(), eleMap);
+			ele.setCurVal(val);
+		}
+	}
+
+	public static boolean isOp(String op) {
+		return op.equals("+") || op.equals("*") || op.equals("!");
+	}
+
+	public static int evalExpr(String expr, Map<String, Element> eleMap) {
+		String[] exprArr = expr.split(" ");
+		Stack<Integer> stack = new Stack<Integer>();
+		for (int i =0; i < exprArr.length;i++) {
+			if (!isOp(exprArr[i])) {
+				Element ele = eleMap.get(exprArr[i]);
+				if (ele == null) {
+					System.out.println("Element: "+exprArr[i]+" doesn't exist'");
+					System.exit(-1);
+				}
+				stack.push(ele.getCurVal());
+			} else if (exprArr[i].equals("!")) {
+				int op1 = stack.pop();
+				int result = procOp(op1, 0, exprArr[i]);
+				stack.push(result);
+			} else {
+				int op1 = stack.pop();
+				int op2 = stack.pop();
+				int result = procOp(op1, op2, exprArr[i]);
+				stack.push(result);
+			}
+		}
+		int answer = stack.pop();
+		if (stack.empty())
+			return answer;
+		else {  //shouldn't reach here
+			System.err.println("ERROR!");
+			System.exit(-1);
+			return 0;
+		}
+	}
+	public static int procOp(int op1, int op2,String op) {
+		if (op.equals("!")) {
+			return op1 == 1 ? 0:1;
+		} else if (op.equals("+")) {
+			return (op1+op2)> 0 ? 1 : 0;
+		} else if (op.equals("*")) {
+			return op1 * op2;
+		} else {
+			System.err.println("Wrong operator: " + op);
+			System.exit(-1);
+			return 0;
+		}
 	}
 }
