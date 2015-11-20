@@ -1,3 +1,4 @@
+package src;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -37,7 +38,7 @@ public class gpuSimulator {
 		gpusim.gpuImpRules(gpusim.getRuleList(),run);
 		//gpusim.getgpuEleList();
 		//gpusim.showEleM();
-		gpusim.getgpuRuleList();
+		//gpusim.getgpuRuleList();
 		gpusim.caSim(run,cycles);
 	}
 

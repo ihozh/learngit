@@ -1,3 +1,4 @@
+package src;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.StringTokenizer;
+import src.gpuUtility;
 
 public class Utility {
 	public static void parseElements(List<Element> eleList, BufferedReader br,
@@ -197,6 +199,15 @@ public class Utility {
 						j++;
 					}
 				}
+			}
+			
+			
+			eleM = gpuUtility.caSimNoRank(eleM,ruleLM,ruleRM);
+			for (int i = 0;i<run;i++) {
+				for (int j=0;j<eleM[0].length;j++) {
+					System.out.print(eleM[i][j]+" ");
+				}
+				System.out.println();
 			}
 			for (int i = 0;i<run;i++) {
 				for(int j=0;j<ruleLM[0].length;j++) {

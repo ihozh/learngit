@@ -17,19 +17,19 @@ JNIEXPORT jobjectArray JNICALL Java_src_gpuUtility_caSimNoRank
 
 /*
  * Class:     src_gpuUtility
- * Method:    caSimRank
- * Signature: ([[I)[[I
+ * Method:    getString
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICAL Java_src_gpuUtility_caSimRank
-  (JNIEnv *, jclass, jobjectArray);
+JNIEXPORT jstring JNICALL Java_src_gpuUtility_getString
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     src_gpuUtility
- * Method:    raSimProc
- * Signature: ([[I)[[I
+ * Method:    getArray
+ * Signature: ([I)[I
  */
-JNIEXPORT jobjectArray JNICALL Java_src_gpuUtility_raSimProc
-  (JNIEnv *, jclass, jobjectArray);
+JNIEXPORT jintArray JNICALL Java_src_gpuUtility_getArray
+  (JNIEnv *, jclass, jintArray);
 
 #ifdef __cplusplus
 }
